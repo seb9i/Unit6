@@ -21,16 +21,30 @@ public class Main {
                 a.put(i, 1);
             }
         }
+
         if (a.size() == 1){
             fiveOfAKind += 1;
             return "fiveOfAKind";
         }
         else if (a.size() == 2){
             if (a.containsValue(4)){
+                if (a.containsKey("Jack")){
+                    if (a.get("Jack") == 1){
+                        fiveOfAKind += 1;
+                        return "fiveOfAKind";
+                    }
+                }
                 fourOfAKind += 1;
                 return "fourOfAKind";
             }
             else {
+                if (a.containsKey("Jack")){
+                    if (a.get("Jack") == 1){
+                        fourOfAKind += 1;
+                        return "fourOfAKind";
+                    }
+                }
+
                 fullHouse += 1;
                 return "fullHouse";
             }
@@ -40,32 +54,51 @@ public class Main {
                 threeOfAKind += 1;
                 return "threeOfAKind";
             }
-            else if (a.get("Jack") == 2){
-                fourOfAKind += 1;
-                return "fourOfAKind";
+
+            if (a.containsKey("Jack")){
+                if (a.get("Jack") == 2){
+                    fourOfAKind += 1;
+                    return "fourOfAKind";
+                }
+                else if (a.get("Jack") == 1){
+                    threeOfAKind += 1;
+                    return "threeOfAKind";
+                }
             }
-            else if (a.get("Jack") == 1){
-                threeOfAKind += 1;
-                return "threeOfAKind";
+            if (a.containsValue(2)){
+                twoPair += 1;
+                return "twoPair";
             }
+
 
         }
         else if (a.size() == 4){
-            if (a.get("Jack") == 1){
-                fourOfAKind += 1;
-                return "fourOfAKind";
+            if (a.containsKey("Jack")){
+                if (a.get("Jack") == 1){
+                    fourOfAKind += 1;
+                    return "fourOfAKind";
+                }
             }
+
             onePair += 1;
             return "onePair";
         }
         else {
+            if (a.containsKey("Jack")){
+                if (a.get("Jack") == 1){
+                    onePair += 1;
+                    return "onePair";
+                }
+            }
+
             highCard += 1;
             return "highCard";
         }
+        return line;
     }
     public static void eval2(){
         String[] ranking = {"fiveOfAKind", "fourOfAKind", "fulLHouse", "threeOfAKind", "twoPair", "onePair", "highCard"};
-        String[] ranking2 = {"Ace", "King", "Queen", "Jack", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
+        String[] ranking2 = {"Ace", "King", "Queen", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "Jack"};
 
         String[] xr = new String[re.textToArray("src/re.txt").length];
         for (int i = 0; i < re.textToArray("src/re.txt").length; i ++){
@@ -87,20 +120,24 @@ public class Main {
             return 0;
         });
         for (int i = 0; i < xr.length; i++){
-            System.out.println(xr[i].substring(xr[i].indexOf("|") + 1) + " " + (i + 1));
+            System.out.println(xr[i] + " " + (i + 1) + eval(xr[i]));
             sum += Integer.valueOf(xr[i].substring(xr[i].indexOf("|") + 1)) * (i + 1);
         }
 
 
     }
     public static void main(String[] args) {
-        System.out.printf("Number of five of a kind hands:", fiveOfAKind);
-        System.out.printf("Number of full house hands: ", fullHouse);
-        System.out.printf("Number of four of a kind hands:", fourOfAKind);
-        System.out.printf("Number of three of a kind hands:", threeOfAKind);
-        System.out.printf("Number of two pair hands:", twoPair);
-        System.out.printf("Number of one pair hands", onePair);
-        System.out.printf("Number of high card hands", highCard);
+        for (String i: re.textToArray("src/re.txt")){
+            eval(i);
+        }
+        System.out.printf("Number of five of a kind hands:" +  fiveOfAKind);
+        System.out.printf("\nNumber of full house hands: " + fullHouse);
+        System.out.printf("\nNumber of four of a kind hands: " +  fourOfAKind);
+        System.out.printf("\nNumber of three of a kind hands: " + threeOfAKind);
+        System.out.printf("\nNumber of two pair hands: " + twoPair);
+        System.out.printf("\nNumber of one pair hands: " +  onePair);
+        System.out.printf("\nNumber of high card hands: " +  highCard + "\n");
+        System.out.println("");
         eval2();
         System.out.println(sum);
     }
