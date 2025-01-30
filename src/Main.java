@@ -9,6 +9,7 @@ public class Main {
     static int twoPair;
     static int onePair;
     static int highCard;
+    static int sum;
     public static String eval(String line){
         HashMap<String, Integer> a = new HashMap<>();
 
@@ -39,13 +40,21 @@ public class Main {
                 threeOfAKind += 1;
                 return "threeOfAKind";
             }
-            else{
-                twoPair += 1;
-                return "twoPair";
+            else if (a.get("Jack") == 2){
+                fourOfAKind += 1;
+                return "fourOfAKind";
+            }
+            else if (a.get("Jack") == 1){
+                threeOfAKind += 1;
+                return "threeOfAKind";
             }
 
         }
         else if (a.size() == 4){
+            if (a.get("Jack") == 1){
+                fourOfAKind += 1;
+                return "fourOfAKind";
+            }
             onePair += 1;
             return "onePair";
         }
@@ -56,19 +65,43 @@ public class Main {
     }
     public static void eval2(){
         String[] ranking = {"fiveOfAKind", "fourOfAKind", "fulLHouse", "threeOfAKind", "twoPair", "onePair", "highCard"};
+        String[] ranking2 = {"Ace", "King", "Queen", "Jack", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
+
         String[] xr = new String[re.textToArray("src/re.txt").length];
         for (int i = 0; i < re.textToArray("src/re.txt").length; i ++){
-            xr[i] = re.textToArray("src/re.txt")[i] + " " + eval(re.textToArray("src/re.txt")[i]);
+            xr[i] = re.textToArray("src/re.txt")[i];
         }
-        Arrays.sort(xr, (a, b) -> Integer.compare(Arrays.asList(ranking).indexOf(b.substring(b.indexOf(" ") + 1)), Arrays.asList(ranking).indexOf(a.substring(a.indexOf(" ") + 1))));
-        for (String a: xr){
-            System.out.println(a);
+        Arrays.sort(xr, (a, b) -> {
+            String[] ar = a.substring(0, a.indexOf("|")).split(",");
+            String[] br = b.substring(0, b.indexOf("|")).split(",");
+            if (eval(b).compareTo(eval(a)) == 0){
+                for (int i = 0; i < ar.length; i++){
+                    if (Arrays.asList(ranking2).indexOf(ar[i]) != Arrays.asList(ranking2).indexOf(br[i])){
+                        return Integer.compare(Arrays.asList(ranking2).indexOf(br[i]), Arrays.asList(ranking2).indexOf(ar[i]));
+                    }
+                }
+            }
+            else {
+                return Integer.compare(Arrays.asList(ranking).indexOf(eval(b)), Arrays.asList(ranking).indexOf(eval(a)));
+            }
+            return 0;
+        });
+        for (int i = 0; i < xr.length; i++){
+            System.out.println(xr[i].substring(xr[i].indexOf("|") + 1) + " " + (i + 1));
+            sum += Integer.valueOf(xr[i].substring(xr[i].indexOf("|") + 1)) * (i + 1);
         }
 
 
     }
     public static void main(String[] args) {
-
+        System.out.printf("Number of five of a kind hands:", fiveOfAKind);
+        System.out.printf("Number of full house hands: ", fullHouse);
+        System.out.printf("Number of four of a kind hands:", fourOfAKind);
+        System.out.printf("Number of three of a kind hands:", threeOfAKind);
+        System.out.printf("Number of two pair hands:", twoPair);
+        System.out.printf("Number of one pair hands", onePair);
+        System.out.printf("Number of high card hands", highCard);
         eval2();
+        System.out.println(sum);
     }
 }
