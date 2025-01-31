@@ -12,7 +12,6 @@ public class Main {
     static int sum;
     public static String eval(String line){
         HashMap<String, Integer> a = new HashMap<>();
-
         for (String i: line.substring(0, line.indexOf("|")).split(",")){
             if (a.containsKey(i)){
                 a.put(i, (a.get(i) + 1));
@@ -21,62 +20,62 @@ public class Main {
                 a.put(i, 1);
             }
         }
-
         if (a.size() == 1){
             fiveOfAKind += 1;
             return "fiveOfAKind";
         }
         else if (a.size() == 2){
             if (a.containsValue(4)){
-                if (a.containsKey("Jack")){
-                    if (a.get("Jack") == 1){
-                        fiveOfAKind += 1;
-                        return "fiveOfAKind";
-                    }
+                if (a.containsKey("Jack")){ // 2, 2, 2, 2, JACK
+                    fiveOfAKind += 1;
+                    return "fiveOfAKind";
                 }
                 fourOfAKind += 1;
                 return "fourOfAKind";
             }
             else {
-                if (a.containsKey("Jack")){
+                if (a.containsKey("Jack")){ // 2, 2, 2, JACK, JACK
                     if (a.get("Jack") == 1){
                         fourOfAKind += 1;
                         return "fourOfAKind";
                     }
+                    fullHouse += 1;
+                    return "fullHouse";
                 }
-
                 fullHouse += 1;
                 return "fullHouse";
             }
         }
         else if (a.size() == 3){
-            if (a.containsValue(3)){
-                threeOfAKind += 1;
-                return "threeOfAKind";
-            }
+
 
             if (a.containsKey("Jack")){
-                if (a.get("Jack") == 2){
+                if (a.get("Jack") == 2){ // JACK JACK 1 2 1
                     fourOfAKind += 1;
                     return "fourOfAKind";
                 }
-                else if (a.get("Jack") == 1){
+                if (a.get("Jack") == 1){
                     threeOfAKind += 1;
                     return "threeOfAKind";
                 }
+
             }
             if (a.containsValue(2)){
                 twoPair += 1;
                 return "twoPair";
+            }
+            if (a.containsValue(3)){
+                threeOfAKind += 1;
+                return "threeOfAKind";
             }
 
 
         }
         else if (a.size() == 4){
             if (a.containsKey("Jack")){
-                if (a.get("Jack") == 1){
-                    fourOfAKind += 1;
-                    return "fourOfAKind";
+                if (a.get("Jack") == 1){ // JACK 2 3 4 3
+                    threeOfAKind += 1;
+                    return "threeOfAKind";
                 }
             }
 
@@ -97,7 +96,7 @@ public class Main {
         return line;
     }
     public static void eval2(){
-        String[] ranking = {"fiveOfAKind", "fourOfAKind", "fulLHouse", "threeOfAKind", "twoPair", "onePair", "highCard"};
+        String[] ranking = {"fiveOfAKind", "fourOfAKind", "fullHouse", "threeOfAKind", "twoPair", "onePair", "highCard"};
         String[] ranking2 = {"Ace", "King", "Queen", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "Jack"};
 
         String[] xr = new String[re.textToArray("src/re.txt").length];
@@ -120,12 +119,11 @@ public class Main {
             return 0;
         });
         for (int i = 0; i < xr.length; i++){
-            System.out.println(xr[i] + " " + (i + 1) + eval(xr[i]));
+            System.out.println(xr[i] + eval(xr[i]));
             sum += Integer.valueOf(xr[i].substring(xr[i].indexOf("|") + 1)) * (i + 1);
         }
-
-
     }
+
     public static void main(String[] args) {
         for (String i: re.textToArray("src/re.txt")){
             eval(i);
@@ -137,8 +135,8 @@ public class Main {
         System.out.printf("\nNumber of two pair hands: " + twoPair);
         System.out.printf("\nNumber of one pair hands: " +  onePair);
         System.out.printf("\nNumber of high card hands: " +  highCard + "\n");
-        System.out.println("");
         eval2();
-        System.out.println(sum);
+        System.out.printf("Total Bid Value: %d", sum);
+
     }
 }
