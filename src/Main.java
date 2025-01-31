@@ -25,75 +25,41 @@ public class Main {
             return "fiveOfAKind";
         }
         else if (a.size() == 2){
+            if (a.containsKey("Jack")){
+                fourOfAKind += 1;
+                return "fourOfAKind";
+            }
             if (a.containsValue(4)){
-                if (a.containsKey("Jack")){ // 2, 2, 2, 2, JACK
-                    fiveOfAKind += 1;
-                    return "fiveOfAKind";
-                }
                 fourOfAKind += 1;
                 return "fourOfAKind";
             }
             else {
-                if (a.containsKey("Jack")){ // 2, 2, 2, JACK, JACK
-                    if (a.get("Jack") == 1){
-                        fourOfAKind += 1;
-                        return "fourOfAKind";
-                    }
-                    fullHouse += 1;
-                    return "fullHouse";
-                }
                 fullHouse += 1;
                 return "fullHouse";
             }
         }
         else if (a.size() == 3){
-
-
             if (a.containsKey("Jack")){
-                if (a.get("Jack") == 2){ // JACK JACK 1 2 1
-                    fourOfAKind += 1;
-                    return "fourOfAKind";
-                }
-                if (a.get("Jack") == 1){
-                    threeOfAKind += 1;
-                    return "threeOfAKind";
-                }
-
-            }
-            if (a.containsValue(2)){
-                twoPair += 1;
-                return "twoPair";
+                threeOfAKind += 1;
+                return "threeOfAKind";
             }
             if (a.containsValue(3)){
                 threeOfAKind += 1;
                 return "threeOfAKind";
             }
-
-
+            else{
+                twoPair += 1;
+                return "twoPair";
+            }
         }
         else if (a.size() == 4){
-            if (a.containsKey("Jack")){
-                if (a.get("Jack") == 1){ // JACK 2 3 4 3
-                    threeOfAKind += 1;
-                    return "threeOfAKind";
-                }
-            }
-
             onePair += 1;
             return "onePair";
         }
         else {
-            if (a.containsKey("Jack")){
-                if (a.get("Jack") == 1){
-                    onePair += 1;
-                    return "onePair";
-                }
-            }
-
             highCard += 1;
             return "highCard";
         }
-        return line;
     }
     public static void eval2(){
         String[] ranking = {"fiveOfAKind", "fourOfAKind", "fullHouse", "threeOfAKind", "twoPair", "onePair", "highCard"};
@@ -119,7 +85,6 @@ public class Main {
             return 0;
         });
         for (int i = 0; i < xr.length; i++){
-            System.out.println(xr[i] + eval(xr[i]));
             sum += Integer.valueOf(xr[i].substring(xr[i].indexOf("|") + 1)) * (i + 1);
         }
     }
