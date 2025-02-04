@@ -133,6 +133,9 @@ public class Card implements Comparable<Card>{
     public int compareTo (Card card){
         String[] ar = this.line.substring(0, this.line.indexOf("|")).split(",");
         String[] br = card.line.substring(0, card.line.indexOf("|")).split(",");
+        String determineLine = jack ? card.determineLineJack(): card.determineLine();
+        String determineLine2 = jack ? this.determineLineJack(): this.determineLine();
+
         String[] ranking = {"fiveOfAKind", "fourOfAKind", "fullHouse", "threeOfAKind", "twoPair", "onePair", "highCard"};
 
         String[] ranking2 = {"Ace", "King", "Queen", "Jack", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1"};
@@ -140,7 +143,8 @@ public class Card implements Comparable<Card>{
             ranking2 = new String[]{"Ace", "King", "Queen", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", "Jack"};
 
         }
-        if (Arrays.asList(ranking).indexOf(card.determineLine()) == Arrays.asList(ranking).indexOf(this.determineLine())){
+
+        if (Arrays.asList(ranking).indexOf(determineLine) == Arrays.asList(ranking).indexOf(determineLine2)){
             for (int i = 0; i < ar.length; i++){
                 if (Arrays.asList(ranking2).indexOf(br[i]) != Arrays.asList(ranking2).indexOf(ar[i])) {
                     return Integer.compare(Arrays.asList(ranking2).indexOf(br[i]), Arrays.asList(ranking2).indexOf(ar[i]));
@@ -148,7 +152,10 @@ public class Card implements Comparable<Card>{
             }
         }
         else {
-            return Integer.compare(Arrays.asList(ranking).indexOf(card.determineLine()), Arrays.asList(ranking).indexOf(this.determineLine()));
+            if (jack){
+                return Integer.compare(Arrays.asList(ranking).indexOf(determineLine), Arrays.asList(ranking).indexOf(determineLine2));
+            }
+            return Integer.compare(Arrays.asList(ranking).indexOf(determineLine), Arrays.asList(ranking).indexOf(determineLine2));
         }
         return 0;
     }

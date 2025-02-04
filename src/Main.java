@@ -41,35 +41,33 @@ public class Main {
 //    }
 
     public static void main(String[] args) {
-        Card[] c = createDeck("src/re.txt");
+        Card[] c = createDeck("src/re.txt", false);
         for (Card i: c){
-            if (Objects.equals(i.determineLineJack(), "fiveOfAKind")){
+            if (Objects.equals(i.determineLine(), "fiveOfAKind")){
                 fiveOfAKind += 1;
             }
-            if (Objects.equals(i.determineLineJack(), "fourOfAKind")){
+            if (Objects.equals(i.determineLine(), "fourOfAKind")){
                 fourOfAKind += 1;
             }
-            if (Objects.equals(i.determineLineJack(), "threeOfAKind")){
+            if (Objects.equals(i.determineLine(), "threeOfAKind")){
                 threeOfAKind += 1;
             }
-            if (Objects.equals(i.determineLineJack(), "fullHouse")){
+            if (Objects.equals(i.determineLine(), "fullHouse")){
                 fullHouse += 1;
             }
-            if (Objects.equals(i.determineLineJack(), "twoPair")){
+            if (Objects.equals(i.determineLine(), "twoPair")){
                 twoPair += 1;
             }
-            if (Objects.equals(i.determineLineJack(), "onePair")){
+            if (Objects.equals(i.determineLine(), "onePair")){
                 onePair += 1;
             }
-            if (Objects.equals(i.determineLineJack(), "highCard")){
+            if (Objects.equals(i.determineLine(), "highCard")){
                 highCard += 1;
             }
-            System.out.println(i.line + i.determineLineJack());
         }
         for (int i = 0; i < c.length; i++){
             sum += (i + 1) * c[i].returnBid();
         }
-
         System.out.printf("Number of five of a kind hands: %d\n", fiveOfAKind);
         System.out.printf("Number of full house hands: %d\n", fullHouse);
         System.out.printf("Number of four of a kind hands: %d\n", fourOfAKind);
@@ -78,15 +76,21 @@ public class Main {
         System.out.printf("Number of one pair hands %d\n", onePair);
         System.out.printf("Number of high card hands %d\n", highCard);
         System.out.printf("Total Bid Value: %d\n", sum);
+        sum = 0;
+        Card[] d = createDeck("src/re.txt", true);
+        for (int i = 0; i < d.length; i++){
+            sum += (i + 1) * d[i].returnBid();
+        }
+        System.out.printf("Total Bid Value Jack: %d\n", sum);
 
 
     }
-    public static Card[] createDeck(String fileLocation){
+    public static Card[] createDeck(String fileLocation, boolean jack){
         String[] arr = re.textToArray(fileLocation);
         int length = arr.length;
         Card[] c = new Card[length];
         for (int i = 0; i < arr.length; i++){
-            c[i] = new Card(arr[i], true);
+            c[i] = new Card(arr[i], jack);
         }
         Arrays.sort(c);
         return c;
